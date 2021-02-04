@@ -5,7 +5,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 class UserModel(models.Model):
     UserName=models.CharField(max_length=200)
     Email = models.EmailField()
-    Mobile =PhoneNumberField()
+    Mobile =models.CharField(max_length=20)
     Password=models.CharField(max_length=255)
     # image field
 

@@ -1,9 +1,30 @@
+
 from django.shortcuts import render
+
 from rest_framework.decorators import APIView
 from rest_framework.response import Response
 import re
 from .models import UserModel
 # Create your views here.
+
+
+def update_user(user_object, data):
+    if "username" in data:
+        user_object.UserName = data['username']
+    
+    if "email" in data:
+        user_object.Email = data['email']
+
+    if "mobile" in data:
+        user_object.Mobile = data['mobile']
+
+    if "password" in data:
+        user_object.Password = data['password']
+
+    print("end if")
+    
+    user_object.save()
+    return user_object
 
 
 def isValid(s):
@@ -43,20 +64,23 @@ class User(APIView):
             email = request.data['email']
             password = request.data['password']
             #  check with databse check filter or get
-            user_object = UserModel.objects.filter(Email=email, Password=password)
+            user_object = UserModel.objects.filter(
+                Email=email, Password=password)
             if user_object:
                 return Response("Login successfuly")
-            
-            return Response("Plz First Signup user is not present")
-            
 
-    def delete(self, request, userid=None):
+            return Response("Plz First Signup user is not present")
+
+    def delete(self, request, username=None):
         if request.method == "DELETE":
             userdata = request.data['userdata']
             user = delete_user(userdata)
             user.delete()
             return Response("Delete Successfully")
 
-    def put(self, request, userid=None):
-        if request.method == "PUT":
-            pass
+    def put(self, request, username="karanjkar"):
+        user_object = UserModel.objects.get(UserName=username)
+        if user_object:
+            userChange = request.data['password']
+            update = update_user(user_object, userChange)
+            return Response("ALL Clear")
