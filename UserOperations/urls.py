@@ -18,5 +18,5 @@ from django.urls import path
 from userapi.views import User
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/',User.as_view()),
+    path('api/user/',User.as_view()),
 ]
