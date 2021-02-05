@@ -7,6 +7,11 @@ import re
 from .models import UserModel
 # Create your views here.
 
+def get_single_user(email,password):
+    user_object = UserModel.objects.filter(Email=email, Password=password)
+    return user_object
+
+
 
 def update_user(user_object, data):
     if "username" in data:
@@ -61,12 +66,13 @@ class User(APIView):
 
     def get(self, request):
         if request.method == "GET":
-            email = request.data['email']
-            password = request.data['password']
+            # email = request.data['email']
+            # password = request.data['password']
+            email="karanjkar.nk@gmail.com"
+            password="4545"
             #  check with databse check filter or get
-            user_object = UserModel.objects.filter(
-                Email=email, Password=password)
-            if user_object:
+            user=get_single_user(email,password)
+            if user:
                 return Response("Login successfuly")
 
             return Response("Plz First Signup user is not present")
